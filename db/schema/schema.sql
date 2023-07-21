@@ -1,0 +1,37 @@
+-- Drop and recreate Users table (Example)
+
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS passwords CASCADE;
+DROP TABLE IF EXISTS organizations CASCADE;
+
+CREATE TABLE IF NOT EXISTS organizations (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS categories(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  organization_id INT REFERENCES organizations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS apps(
+  name VARCHAR(255) NOT NULL,
+  categories_id INT REFERENCES categories(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS passwords(
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  organization_id INT REFERENCES organizations(id) ON DELETE CASCADE,
+  categories_id INT REFERENCES categories(id) ON DELETE CASCADE
+);
