@@ -1,5 +1,7 @@
 // load .env data into process.env
 require('dotenv').config();
+const users = require('./db/queries/users');
+
 
 // Web server config
 const sassMiddleware = require('./lib/sass-middleware');
@@ -47,6 +49,7 @@ app.use('/users', usersRoutes);
 app.get('/', (req, res) => {
   res.render('index');
 });
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

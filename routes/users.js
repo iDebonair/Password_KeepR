@@ -7,22 +7,20 @@
 
 const express = require('express');
 const router  = express.Router();
+const cookieSession = require("cookie-session");
 const users = require('../db/queries/users');
 router.get('/', (req, res) => {
+
   res.render('users');
 }); 
- 
-router.get('/signin/:id', (req, res) => {
-  const user_id = req.session.user_id;
-  const user = users[user_id];
-  const templateVars = {
-    user : user,
-  };
-  if (user_id) {
-    return res.redirect('/signin')
-  }
-  res.render('users.ejs', templateVars);
-} );
+
+router.get('/signin/:id',(req,res) => {
+  console.log(req.params.id);
+  console.log(users)
+
+  res.render('users')
+})
+
 
 
 module.exports = router;
