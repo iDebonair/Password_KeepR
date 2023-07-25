@@ -7,6 +7,7 @@
 
 const express = require('express');
 const router  = express.Router();
+const passwordController = require('../db/queries/users')
 const passwordControl = require('../db/queries/users')
 
 router.get('/', (req, res) => {
@@ -28,5 +29,9 @@ router.get('/passwords/:id/edit', (req, res) => {
   res.render('edit_passwords.ejs');
   console.log ("Here is a succesful update", id)
 });
+
+
+router.post('/passwords/:id', passwordController.addPassword);
+
 
 module.exports = router;

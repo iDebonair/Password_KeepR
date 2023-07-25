@@ -31,6 +31,7 @@ app.use(express.static('public'));
 const userApiRoutes = require('./routes/users-api');
 const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
+const generatePassword = require('./routes/generatePassword')
 const editPassword = require('./routes/editPassword');
 
 // Mount all resource routes
@@ -39,6 +40,7 @@ const editPassword = require('./routes/editPassword');
 app.use('/api/users', userApiRoutes);
 app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
+app.use('/', generatePassword)
 app.use('/', editPassword);
 app.use('/delete', editPassword);
 // Note: mount other resources here, using the same pattern above
