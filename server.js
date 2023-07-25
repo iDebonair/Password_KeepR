@@ -33,6 +33,7 @@ const widgetApiRoutes = require('./routes/widgets-api');
 const usersRoutes = require('./routes/users');
 const generatePassword = require('./routes/generatePassword')
 const editPassword = require('./routes/editPassword');
+const addPassword = require('./routes/addPassword');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -43,6 +44,7 @@ app.use('/users', usersRoutes);
 app.use('/', generatePassword)
 app.use('/', editPassword);
 app.use('/delete', editPassword);
+app.use('/', addPassword);
 // Note: mount other resources here, using the same pattern above
 
 // Home page
