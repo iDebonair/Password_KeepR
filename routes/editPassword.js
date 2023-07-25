@@ -7,9 +7,9 @@ const { get } = require('./users');
 
 // Create a new pool instance
 const pool = new Pool({
-  user: 'salima',
+  user: 'vagrant',
   host: 'localhost',
-  database: 'passwords',
+  database: 'midterms',
   password: 'password',
   port: 5432,
 });
@@ -34,21 +34,47 @@ async function getPasswordById(passwordId) {
 }
 
 // GET route to render the edit_passwords.ejs form
-app.get('/passwords/edit', (req, res) => {
+app.get('/passwords/:id/edit', (req, res) => {
   // fetch the password details by ID from database
   const passwordId = req.params.id;
-  const password = getPasswordById(passwordId);
-
+  const password = getPasswordById(passwordId) .then((result) => {
   // Pass the password object to the template
-  res.render('editPassword', { password });
+    res.render('editPassword', { password: result })
+  })
+  .catch((error) =>{
+    console.log('Error:', error);
+  })
 });
+
+// Assuming you have a database connection pool initialized as `pool`
+
+async function updatePasswordInDatabase(passwordId, updatedPassword) {
+  try {
+    const { password } = updatedPassword;
+
+    //  database query to update the password based on the provided ID
+    const query = 'UPDATE passwords SET password = $1 WHERE id = $2' ;
+    const values = [password, passwordId];
+
+    const result = await pool.query(query, values)
+
+    // Check if any rows were affected by the update
+    if (result.rowCount === 0) {
+      throw new Error(`Password with ID ${passwordId} not found.`);
+    }
+
+    return result.rows[0]; // If needed, you can return the updated password object
+  } catch (error) {
+    throw new Error(`Error updating password: ${error.message}`);
+  }
+}
 
 // POST route to handle form submission
 app.post('/passwords/:id/edit', async (req, res) => {
   try {
     const passwordId = req.params.id;
-    const { website, username, password } = req.body;
-    await updatePasswordInDatabase(passwordId, { website, username, password });
+    const { password } = req.body;
+    await updatePasswordInDatabase(passwordId, {password });
 
     res.redirect(`/passwords/${passwordId}`);
   } catch (error) {
@@ -56,6 +82,7 @@ app.post('/passwords/:id/edit', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 const passwords = {};
 

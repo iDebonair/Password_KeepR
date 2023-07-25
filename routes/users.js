@@ -7,6 +7,7 @@
 
 const express = require('express');
 const router  = express.Router();
+const passwordControl = require('../db/queries/users')
 
 router.get('/', (req, res) => {
   res.render('users');
