@@ -5,7 +5,7 @@ const path = require('path');
 // ... (other middleware and configurations)
 
 // GET route to render the edit_passwords.ejs form
-app.get('/passwords/:id/edit', (req, res) => {
+app.get('/passwords/:id', (req, res) => {
   // fetch the password details by ID from your database
   const passwordId = req.params.id;
   const password = getPasswordById(passwordId); // To be replaced with the right function from sign on
@@ -32,14 +32,14 @@ const passwords = {};
 
 app.post('/passwords/:id/delete', (req, res) => {
   const passwordId = req.params.id;
-  const password = passwordDatabase[passwordId];
+  const password = passwords[passwordId];
   const userId = req.session.user_id;
 
   // Check if the user is logged in
   if (!userId) {
     res.status(401).end("Please log in to view the page");
     } else {
-        delete passwordDatabase[passwordId];
+        delete password;
         res.redirect("/passwords");
       }
 });
