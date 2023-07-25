@@ -39,7 +39,8 @@ const editPassword = require('./routes/editPassword');
 app.use('/api/users', userApiRoutes);
 app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
-app.use('/editPassword', editPassword);
+app.use('/', editPassword);
+app.use('/delete', editPassword);
 // Note: mount other resources here, using the same pattern above
 
 // Home page
