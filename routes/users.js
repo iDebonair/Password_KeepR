@@ -27,7 +27,6 @@ router.post('/passwords/:id', async (req, res) => {
 
 router.get('/passwords/:id/edit', (req, res) => {
   res.render('edit_passwords.ejs');
-  console.log ("Here is a succesful update", id)
 });
 
 
