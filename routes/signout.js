@@ -9,6 +9,8 @@ const express = require('express');
 const router  = express.Router();
 const bcrypt = require("bcryptjs");
 const cookieSession = require("cookie-session");
+
+const { Pool } = require('pg');
 router.use(
   cookieSession({
     name: "session",
@@ -17,12 +19,3 @@ router.use(
     //maxAge: 24 * 60 * 60 * 1000 expire 24 hours
   })
 );
-const users = require('../db/queries/users');
-router.get('/', (req, res) => {
-
-  res.render('index');
-}); 
-
-
-
-module.exports = router;
