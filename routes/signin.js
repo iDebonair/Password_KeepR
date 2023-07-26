@@ -67,7 +67,8 @@ router.post('/signin', (req, res) => {
         return res.status(401).send('Invalid username or password');
       }
 
-      const user = result.rows[0];
+      const user = result.rows;
+      console.log(result.rows)
       req.session.user_id = user.id;
 
       const templateVars = {
@@ -80,6 +81,5 @@ router.post('/signin', (req, res) => {
       res.status(500).send('Internal Server Error');
     });
 });
-
 
 module.exports = router;

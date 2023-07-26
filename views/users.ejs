@@ -20,13 +20,19 @@
 
 <body>
   <%- include('partials/_header.ejs')%>
-  <h1>User</h1>
+  <h1>Saved Passwords</h1>
+  <% user.forEach(element => { %>
   <ul id="users"></ul>
-  <% for (key of Object.keys(user) ) {%>
-   <li><%= key %> : <%= user[key]%></li>
- <% }%>
+  <% for (key of Object.keys(element) ) {%>
+   <li><%= key %> : <%= element[key]%></li>
+  <% }%>
+  <div>=============================</div>
+    
+  <% }) %>
   
-  <ul id="users"></ul>
+  
+  
+ 
 
   <!-- Link to the password generator page -->
   <a href="/generatepassword" target="_blank">Go to Password Generator</a>
