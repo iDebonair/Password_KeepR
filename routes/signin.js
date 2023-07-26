@@ -6,7 +6,7 @@
  */
 
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const bcrypt = require("bcryptjs");
 const cookieSession = require("cookie-session");
 
@@ -34,45 +34,52 @@ router.use(
 
 
 router.get('/', (req, res) => {
-  req.session = null;
   const templateVars = {
-    user: req.session,
+    user: req.session.user // Pass the user data from the session to the template
   };
-  res.render('index',templateVars);
-}); 
-
-    // Use the pool to query the database
-   
-
-    // Check if the password with the provided ID exists in the database
-    
-
-router.post('/signin',(req,res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  const query = 'SELECT * FROM users WHERE name = $1 and password = $2';
-  const values = [username, password];
-  const result = () =>  {  db
-  .query(query,values)
-   
-  .then((result) => {
-    if( result.rows[0].id) {
-      const user = result.rows[0];
-      req.session.user_id = user.id;
-        const templateVars = {
-        user: user
-      };
-      res.render('users',templateVars)
-    }
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
-}
-result();
+  res.render('index', templateVars);
 });
 
+// Use the pool to query the database
 
+
+// Check if the password with the provided ID exists in the database
+
+
+router.post('/signin', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const query = `
+  SELECT users.name as user, apps.name as app, passwords.password, categories.name as category
+  FROM users
+    JOIN passwords ON users.id = user_id
+    JOIN categories ON categories.id = passwords.categories_id
+    JOIN apps ON categories.id = apps.categories_id
+  WHERE users.name = $1
+  `;
+  const values = [username];
+
+  db.query(query, values)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        // User not found or incorrect credentials
+        return res.status(401).send('Invalid username or password');
+      }
+
+      const user = result.rows[0];
+      req.session.user_id = user.id;
+
+      const templateVars = {
+        user: user
+      };
+      res.render('users', templateVars);
+    })
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send('Internal Server Error');
+    });
+});
 
 
 module.exports = router;
