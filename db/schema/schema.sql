@@ -35,3 +35,4 @@ CREATE TABLE IF NOT EXISTS passwords(
   organization_id INT REFERENCES organizations(id) ON DELETE CASCADE,
   categories_id INT REFERENCES categories(id) ON DELETE CASCADE
 );
+
