@@ -69,7 +69,7 @@ router.post('/signin', (req, res) => {
 
       const user = result.rows;
       console.log(result.rows)
-      req.session.user_id = user.id;
+      req.session.username = user[0].user;
 
       const templateVars = {
         user: user

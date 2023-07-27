@@ -1,6 +1,6 @@
 // Client facing scripts here
 // add new password to database
-const db = require('/home/labber/password_keepr/db/connection');
+const db = require('../../db/connection');
 
 // Function to add a new password to the database
 async function addPassword(newPasswordData, loggedInUserName) {
