@@ -42,6 +42,7 @@ async function addPassword(newPasswordData, loggedInUserName) {
   } catch (error) {
     throw error;
   }
+}
 
 
 // function to generate random password
