@@ -15,12 +15,27 @@
 
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script defer src="/scripts/users.js"></script>
+ <!----> 
 </head>
 
 <body>
-  <h1>Users</h1>
-  <button id="fetch-users">Fetch Users via AJAX</button>
+  <%- include('partials/_header.ejs')%>
+  <h1>Saved Passwords</h1>
+  <% user.forEach(element => { %>
   <ul id="users"></ul>
+  <% for (key of Object.keys(element) ) {%>
+   <li><%= key %> : <%= element[key]%></li>
+  <% }%>
+  <div>=============================</div>
+    
+  <% }) %>
+  
+  
+  
+ 
+
+  <!-- Link to the password generator page -->
+  <a href="/generatepassword" target="_blank">Go to Password Generator</a>
 </body>
 
 </html>

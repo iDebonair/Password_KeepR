@@ -1,6 +1,14 @@
 const db = require('../connection');
 
 
+const getUsers = () => {
+  return db.query('SELECT * FROM users;')
+    .then(data => {
+      console.log(data);
+      return data.rows;
+ });
+};
+
 // add new password to database
 function addPassword(newPassword) {
   return db
@@ -17,4 +25,32 @@ function addPassword(newPassword) {
     });
 }
 
-module.exports = { addPassword };
+// function to generate random password
+function generatePassword(options) {
+  const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+  const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numberChars = '0123456789';
+  const symbolChars = '!@#$%^&*()-=_+[]{}|;:,.<>?';
+
+  let allChars = '';
+
+  if (options.includeLowercase) allChars += lowercaseChars;
+  if (options.includeUppercase) allChars += uppercaseChars;
+  if (options.includeNumbers) allChars += numberChars;
+  if (options.includeSymbols) allChars += symbolChars;
+
+  if (!allChars) {
+    throw new Error('Must include at least one character type.');
+  }
+
+  let password = '';
+  for (let i = 0; i < options.length; i++) {
+    const randomIndex = Math.floor(Math.random() * allChars.length);
+    password += allChars[randomIndex];
+  }
+
+  return password;
+}
+
+
+module.exports = { addPassword, generatePassword };

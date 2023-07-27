@@ -1,6 +1,5 @@
 // Client facing scripts here
 // add new password to database
-
 const db = require('/home/labber/password_keepr/db/connection');
 
 // Function to add a new password to the database
@@ -43,7 +42,7 @@ async function addPassword(newPasswordData, loggedInUserName) {
   } catch (error) {
     throw error;
   }
-}
+
 
 // function to generate random password
 function generatePassword(options) {
@@ -72,3 +71,5 @@ function generatePassword(options) {
   return password;
 }
 
+
+module.exports = { addPassword, generatePassword };
