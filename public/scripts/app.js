@@ -1,17 +1,18 @@
 // Client facing scripts here
 // add new password to database
-const db = require('/home/labber/password_keepr/db/connection');
+const db = require('../../db/connection');
 
 // Function to add a new password to the database
 async function addPassword(newPasswordData, loggedInUserName) {
   const { appName, password, categoryName } = newPasswordData;
 
-  
+
   try {
     // Get the user_id from the users table based on the logged-in user's name
     const userQuery = `
-      SELECT id, organization_id FROM users WHERE name = $1;
-    `;
+      SELECT id, organization_id FROM users WHERE id = $1;
+    `
+
     const userResult = await db.query(userQuery, [loggedInUserName]);
     const user = userResult.rows[0];
 
@@ -22,7 +23,7 @@ async function addPassword(newPasswordData, loggedInUserName) {
     // Insert appName into the apps table and obtain the app_id
     const appInsertQuery = `
       INSERT INTO apps (name, categories_id)
-      VALUES ($1, (SELECT id FROM categories WHERE name = $2))
+      VALUES ($1, $2)
       RETURNING id;
     `;
     const appInsertValues = [appName, categoryName];
@@ -32,7 +33,7 @@ async function addPassword(newPasswordData, loggedInUserName) {
     // Insert the new password into the passwords table
     const passwordInsertQuery = `
       INSERT INTO passwords (user_id, password, organization_id, categories_id)
-      VALUES ($1, $2, $3, (SELECT id FROM categories WHERE name = $4))
+      VALUES ($1, $2, $3, $4)
       RETURNING *;
     `;
     const passwordInsertValues = [user.id, password, user.organization_id, categoryName];
