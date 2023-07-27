@@ -51,9 +51,9 @@ router.post('/signin', (req, res) => {
   const password = req.body.password;
 
   const query = `
-  SELECT users.name as user, apps.name as app, passwords.password, categories.name as category
+  SELECT users.name as user, users.id as id, apps.name as app, passwords.password, categories.name as category
   FROM users
-    JOIN passwords ON users.id = user_id
+    JOIN passwords ON users.id = passwords.user_id
     JOIN categories ON categories.id = passwords.categories_id
     JOIN apps ON categories.id = apps.categories_id
   WHERE users.name = $1
@@ -69,7 +69,7 @@ router.post('/signin', (req, res) => {
 
       const user = result.rows;
       console.log(result.rows)
-      req.session.username = user[0].user;
+      req.session.user_id = user[0].id;
 
       const templateVars = {
         user: user

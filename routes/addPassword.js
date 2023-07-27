@@ -14,12 +14,12 @@ router.post('/password', (req, res) => {
   const newAppPassword = {
     appName: req.body.appName,
     password: req.body.password,
-    categoryName: req.body.categoryName,
+    categoryName: req.body.categoryID,
     loggedInUserId: req.session.user_id
   };
 
   // Call the passwordController to add the password to the database
-  addPassword(newAppPassword)
+  addPassword(newAppPassword, req.session.user_id)
     .then(password => {
       res.redirect('/signin');
     })
