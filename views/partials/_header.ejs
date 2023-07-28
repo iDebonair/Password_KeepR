@@ -5,7 +5,7 @@
         <h1>Password KeepR</h1>
       </div>
       <% if (user) { %>
-        <form class="form-inline" method="get" action="/" style="justify-self: end;">
+        <form class="form-inline" method="post" action="/signout" style="justify-self: end;">
           <div> Hi,<%= user[0].user %>
           </div>
           <div class="form-group mb-2" style="justify-self: end;">

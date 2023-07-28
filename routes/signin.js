@@ -34,10 +34,15 @@ router.use(
 
 
 router.get('/', (req, res) => {
+  
   const templateVars = {
     user: req.session.user // Pass the user data from the session to the template
   };
   res.render('index', templateVars);
+});
+router.post("/signout", (req, res) => { // sign out
+  req.session = null;
+  res.redirect("/");
 });
 
 // Use the pool to query the database
@@ -70,6 +75,46 @@ router.post('/signin', (req, res) => {
       const user = result.rows;
       console.log(result.rows)
       req.session.user_id = user[0].id;
+      req.session.username = user[0].user;
+      console.log(req.session);
+
+      const templateVars = {
+        user: user
+      };
+      res.render('users', templateVars);
+    })
+    .catch((err) => {
+      console.log(err.message);
+      res.status(500).send('Internal Server Error');
+    });
+});
+
+router.get('/signin', (req, res) => {
+  const username = req.session.username;
+
+
+  const query = `
+  SELECT users.name as user, users.id as id, apps.name as app, passwords.password, categories.name as category
+  FROM users
+    JOIN passwords ON users.id = passwords.user_id
+    JOIN categories ON categories.id = passwords.categories_id
+    JOIN apps ON categories.id = apps.categories_id
+  WHERE users.name = $1
+  `;
+  const values = [username];
+
+  db.query(query, values)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        // User not found or incorrect credentials
+        return res.status(401).send('Invalid username or password');
+      }
+
+      const user = result.rows;
+    
+     
+      
+      console.log(req.session);
 
       const templateVars = {
         user: user

@@ -11,6 +11,17 @@ header {
   align-items: center;
 }
 
+
+  background: rgb(235, 155, 16);
+  background: linear-gradient(
+    227deg,
+    rgb(147, 125, 99) 20%,
+    rgb(145, 119, 99) 30%,
+    rgb(230, 124, 51) 40%,
+    rgb(180, 154, 138) 50%,
+    rgb(165, 142, 129) 60%,
+  );
+
 //--------------->users.ejs CSS
 body {
   background: rgb(163, 208, 219);
@@ -48,16 +59,4 @@ body {
 .page-heading {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-
-  background: rgb(235, 155, 16);
-  background: linear-gradient(
-    227deg,
-    rgb(147, 125, 99) 20%,
-    rgb(145, 119, 99) 30%,
-    rgb(230, 124, 51) 40%,
-    rgb(180, 154, 138) 50%,
-    rgb(165, 142, 129) 60%,
-  );
 }
