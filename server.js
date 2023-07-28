@@ -46,7 +46,7 @@ app.use('/api/widgets', widgetApiRoutes);
 app.use('/users', usersRoutes);
 app.use('/', signin);
 app.use('/', generatePassword)
-app.use('/', editPassword);
+app.use('/api/passwords', editPassword);
 app.use('/delete', editPassword);
 app.use('/', addPassword);
 // Note: mount other resources here, using the same pattern above
@@ -56,7 +56,10 @@ app.use('/', addPassword);
 // Separate them into separate routes files (see above).
 
 app.get('/', (req, res) => {
-  res.render('index');
+  const templateVars = {
+    user: null
+  };
+  res.render('index', templateVars);
 });
 
 

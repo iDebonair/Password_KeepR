@@ -23,30 +23,13 @@ const users = require('../db/queries/users');
 router.get('/', (req, res) => {
 
   res.render('index');
-}); 
+});
 
 
 router.get('/', (req, res) => {
   res.render('users');
 });
 
-// Password Management Routes
-router.post('/passwords/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-   const passwordID = req.params.id;
-  } catch (error) {
-    console.error('Error adding password:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-router.get('/passwords/:id/edit', (req, res) => {
-  res.render('edit_passwords.ejs');
-});
-
-
-router.post('/passwords/:id', passwordController.addPassword);
 
 
 
