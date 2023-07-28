@@ -31,7 +31,7 @@
 
   <!-- Add the Edit and Delete buttons for each password -->
   <div class="buttons-container">
-    <form action="/api/passwords/<%= element.password_id %>/edit" target="_blank"  method="GET">
+    <form action="/api/passwords/<%= element.password_id %>/edit" method="GET">
       <button type="submit">Edit Password</button>
     </form>
     <form action="/api/passwords/<%= element.password_id %>/delete" method="POST">
