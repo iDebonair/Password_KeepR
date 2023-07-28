@@ -1,9 +1,7 @@
 const express = require('express');
-const app = express();
 const path = require('path');
 const { Pool } = require('pg');
 const { get } = require('./users');
-// ... (other middleware and configurations)
 
 // Create a new pool instance
 const pool = new Pool({
@@ -33,72 +31,83 @@ async function getPasswordById(passwordId) {
   }
 }
 
-// GET route to render the edit_passwords.ejs form
-app.get('/passwords/:id/edit', (req, res) => {
-  // fetch the password details by ID from database
-  const passwordId = req.params.id;
-  const password = getPasswordById(passwordId) .then((result) => {
-  // Pass the password object to the template
-    res.render('editPassword', { password: result })
-  })
-  .catch((error) =>{
-    console.log('Error:', error);
-  })
-});
-
-// Assuming you have a database connection pool initialized as `pool`
-
 async function updatePasswordInDatabase(passwordId, updatedPassword) {
   try {
     const { password } = updatedPassword;
 
-    //  database query to update the password based on the provided ID
-    const query = 'UPDATE passwords SET password = $1 WHERE id = $2' ;
-    const values = [password, passwordId];
-
-    const result = await pool.query(query, values)
-
-    // Check if any rows were affected by the update
-    if (result.rowCount === 0) {
-      throw new Error(`Password with ID ${passwordId} not found.`);
-    }
-
-    return result.rows[0]; // If needed, you can return the updated password object
+    const updateQuery = `
+      UPDATE passwords
+      SET password = $1
+      WHERE id = $2;
+    `;
+    const updatedValues = [password, passwordId];
+    await pool.query(updateQuery, updatedValues);
   } catch (error) {
     throw new Error(`Error updating password: ${error.message}`);
   }
 }
 
-// POST route to handle form submission
-app.post('/passwords/:id/edit', async (req, res) => {
+async function deletePassword(passwordId) {
   try {
-    const passwordId = req.params.id;
-    const { password } = req.body;
-    await updatePasswordInDatabase(passwordId, {password });
+    const query = 'DELETE FROM passwords WHERE id = $1';
+    const values = [passwordId];
 
-    res.redirect(`/passwords/${passwordId}`);
+   let result = await pool.query(query, values)
+   return result;
   } catch (error) {
-    console.error('Error updating password:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    throw new Error(`Error deleting password: ${error.message}`);
+  }
+}
+
+const router = express.Router();
+
+router.get('/:id/edit', async (req, res) => {
+  const passwordId = req.params.id;
+console.log("This is password ID", passwordId);
+  try {
+    // Fetch the existing password details from the database based on the passwordId
+    const password = await getPasswordById(passwordId);
+    res.render('editPassword', { password });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error fetching password details');
+  }
+});
+// POST - submit new password
+router.post('/:id', async(req, res) => {
+  const passwordId = req.params.id;
+  // Extract the necessary data from the request body
+  const updatedPassword = {
+    password: req.body.password
+  };
+  console.log("Updated Password", updatedPassword)
+  try {
+    // Call the function to update the password in the database
+    await updatePasswordInDatabase(passwordId, updatedPassword);
+    res.redirect('/signin');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating password');
   }
 });
 
 
-const passwords = {};
-
-app.post('/passwords/:id/delete', (req, res) => {
+router.post('/:id/delete', (req, res) => {
   const passwordId = req.params.id;
-  const password = getPasswordById[passwordId];
-  const userId = req.session.user_id;
+  console.log("This is the password ID", passwordId)
 
-  // Check if the user is logged in
-  if (!userId) {
-    res.status(401).end("Please log in to view the page");
-    } else {
-        delete password;
-        res.redirect("/passwords");
-      }
+
+  // Call the passwordController to delete the password from the database
+  deletePassword(passwordId)
+    .then((result) => {
+      console.log("This is the resilt", result)
+      res.redirect('/api/auth/signin');
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error deleting password');
+    });
 });
 
 
-module.exports = app, getPasswordById;
+module.exports = router;

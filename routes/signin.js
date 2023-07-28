@@ -33,12 +33,12 @@ router.use(
 );
 
 
-router.get('/', (req, res) => {
-  const templateVars = {
-    user: req.session.user // Pass the user data from the session to the template
-  };
-  res.render('index', templateVars);
-});
+// router.get('/home', (req, res) => {
+//   const templateVars = {
+//     user: req.session.user // Pass the user data from the session to the template
+//   };
+//   res.render('users', templateVars);
+// });
 
 // Use the pool to query the database
 
@@ -51,7 +51,7 @@ router.post('/signin', (req, res) => {
   const password = req.body.password;
 
   const query = `
-  SELECT users.name as user, users.id as id, apps.name as app, passwords.password, categories.name as category
+  SELECT users.name as user, users.id as id, apps.name as app, passwords.password, passwords.id as password_id, categories.name as category
   FROM users
     JOIN passwords ON users.id = passwords.user_id
     JOIN categories ON categories.id = passwords.categories_id

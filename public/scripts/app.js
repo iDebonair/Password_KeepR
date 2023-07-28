@@ -1,6 +1,7 @@
 // Client facing scripts here
 // add new password to database
 const db = require('../../db/connection');
+const pool = require('../../routes/editPassword');
 
 // Function to add a new password to the database
 async function addPassword(newPasswordData, loggedInUserName) {
@@ -45,7 +46,6 @@ async function addPassword(newPasswordData, loggedInUserName) {
   }
 }
 
-
 // function to generate random password
 function generatePassword(options) {
   const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
@@ -73,5 +73,17 @@ function generatePassword(options) {
   return password;
 }
 
+async function deletePassword(passwordId) {
+  try {
+    const query = 'DELETE FROM passwords WHERE id = $1';
+    const values = [passwordId];
 
-module.exports = { addPassword, generatePassword };
+    await pool.query(query, values);
+  } catch (error) {
+    throw new Error(`Error deleting password: ${error.message}`);
+  }
+}
+
+
+
+module.exports = { addPassword, generatePassword, deletePassword };

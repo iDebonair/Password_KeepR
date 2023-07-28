@@ -15,7 +15,7 @@
 
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script defer src="/scripts/users.js"></script>
- <!----> 
+ <!---->
 </head>
 
 <body>
@@ -27,12 +27,20 @@
    <li><%= key %> : <%= element[key]%></li>
   <% }%>
   <div>=============================</div>
-    
-  <% }) %>
-  
-  
-  
- 
+
+
+  <!-- Add the Edit and Delete buttons for each password -->
+  <div class="buttons-container">
+    <form action="/api/passwords/<%= element.password_id %>/edit" target="_blank"  method="GET">
+      <button type="submit">Edit Password</button>
+    </form>
+    <form action="/api/passwords/<%= element.password_id %>/delete" method="POST">
+      <button type="submit">Delete Password</button>
+    </form>
+  </div>
+  <br><br>
+<% }) %>
+
 
   <!-- Link to the password generator page -->
   <a href="/generatepassword" target="_blank">Generate Password</a>
