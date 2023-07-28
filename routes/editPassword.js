@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const { Pool } = require('pg');
 const { get } = require('./users');
+const { Console } = require('console');
 
 // Create a new pool instance
 const pool = new Pool({
@@ -16,15 +17,17 @@ const pool = new Pool({
 async function getPasswordById(passwordId) {
   try {
     // Use the pool to query the database
-    const query = 'SELECT * FROM passwords WHERE id = $1';
-    const values = [passwordId];
+    const query =
+    `SELECT * FROM passwords
+      JOIN apps ON passwords.categories_id = apps.categories_id
+      WHERE passwords.id = $1`;
+      const values = [passwordId];
     const result = await pool.query(query, values);
 
     // Check if the password with the provided ID exists in the database
     if (result.rows.length === 0) {
       throw new Error(`Password with ID ${passwordId} not found.`);
     }
-
     return result.rows[0];
   } catch (error) {
     throw new Error(`Error fetching password: ${error.message}`);
@@ -63,11 +66,10 @@ const router = express.Router();
 
 router.get('/:id/edit', async (req, res) => {
   const passwordId = req.params.id;
-console.log("This is password ID", passwordId);
   try {
     // Fetch the existing password details from the database based on the passwordId
-    const password = await getPasswordById(passwordId);
-    res.render('editPassword', { password });
+    const {password, name, id} = await getPasswordById(passwordId);
+    res.render('editPassword', { password, name, passwordId });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching password details');
@@ -101,7 +103,7 @@ router.post('/:id/delete', (req, res) => {
   deletePassword(passwordId)
     .then((result) => {
       console.log("This is the resilt", result)
-      res.redirect('/api/auth/signin');
+      res.redirect('/signin');
     })
     .catch(err => {
       console.error(err);
