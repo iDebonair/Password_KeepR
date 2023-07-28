@@ -5,7 +5,14 @@ const { addPassword } = require('../public/scripts/app');
 
 // GET - show the form to add a new password
 router.get('/passwords/new', (req, res) => {
-  res.render('addPasswordForm');
+  const user = [];
+  user[0] = {};
+  console.log(req.session.username)
+  user[0].user = req.session.username;
+  const templateVars = {
+    user: user
+  }
+  res.render('addPasswordForm',templateVars);
 });
 
 // POST - submit new password
