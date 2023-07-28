@@ -1,6 +1,52 @@
+//--------------->header CSS
+header {
+  background-color: rgb(98, 26, 231);
+  color: white;
+  height: 120px;
+}
+
+.elements {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+//--------------->users.ejs CSS
 body {
+  background: rgb(163, 208, 219);
+}
+
+.password-box {
+  width: 30%;
+  background-color: #f2f2f2;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-left: 40px;
+}
+
+.password-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.heading-box {
+  padding: 10px;
   display: flex;
   flex-direction: column;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 10px;
+}
+
+.page-heading {
+  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
