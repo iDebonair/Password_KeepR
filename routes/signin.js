@@ -56,13 +56,13 @@ router.post('/signin', (req, res) => {
   const password = req.body.password;
 
   const query = `
-  SELECT users.name as user, users.id as id, apps.name as app, passwords.password, passwords.id as password_id, categories.name as category
+  SELECT DISTINCT users.name as user, users.id as id, apps.name as app, passwords.password, passwords.id as password_id, categories.name as category
   FROM users
     JOIN passwords ON users.id = passwords.user_id
     JOIN categories ON categories.id = passwords.categories_id
     JOIN apps ON categories.id = apps.categories_id
   WHERE users.name = $1
-  `;
+`;
   const values = [username];
 
   db.query(query, values)
@@ -79,6 +79,7 @@ router.post('/signin', (req, res) => {
       console.log(req.session);
 
       const templateVars = {
+
         user: user
       };
       res.render('users', templateVars);
@@ -94,13 +95,13 @@ router.get('/signin', (req, res) => {
 
 
   const query = `
-  SELECT users.name as user, users.id as id, apps.name as app, passwords.password, passwords.id as password_id, categories.name as category
+  SELECT DISTINCT users.name as user, users.id as id, apps.name as app, passwords.password, passwords.id as password_id, categories.name as category
   FROM users
     JOIN passwords ON users.id = passwords.user_id
     JOIN categories ON categories.id = passwords.categories_id
-    JOIN apps ON passwords.categories_id = apps.categories_id
+    JOIN apps ON categories.id = apps.categories_id
   WHERE users.name = $1
-  `;
+`;
   const values = [username];
 
   db.query(query, values)

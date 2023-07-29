@@ -7,20 +7,12 @@ header {
 
 .elements {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  margin-left: 20px;
+  margin-right: 20px
 }
 
-
-  background: rgb(235, 155, 16);
-  background: linear-gradient(
-    227deg,
-    rgb(147, 125, 99) 20%,
-    rgb(145, 119, 99) 30%,
-    rgb(230, 124, 51) 40%,
-    rgb(180, 154, 138) 50%,
-    rgb(165, 142, 129) 60%,
-  );
 
 //--------------->users.ejs CSS
 body {
@@ -59,4 +51,95 @@ body {
 .page-heading {
   display: flex;
   justify-content: center;
+}
+
+.buttons-container {
+  display: flex;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.edit-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: darkblue;
+}
+
+.delete-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: rgb(33, 33, 71);
+}
+
+//--------------->editPassword.ejs CSS
+.gp {
+  font-size: larger;
+}
+
+.edit-header {
+  background-color: rgb(98, 26, 231);
+  color: white;
+  height: 120px;
+}
+
+.header-generatePassword {
+  background-color: rgb(98, 26, 231);
+  color: white;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+.link1 {
+
+  color: white;
+  border: none;
+  color: black;
+  font-size: larger;
+
+  padding: 8px 16px;
+
+  cursor: pointer;
+}
+.link1:hover {
+  background-color: rgb(227, 227, 240);
+}
+
+.add-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: darkblue;
+}
+
+.index-gp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  width: 200px;
 }
