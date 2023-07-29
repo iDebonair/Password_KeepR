@@ -68,8 +68,8 @@ router.get('/:id/edit', async (req, res) => {
   const passwordId = req.params.id;
   try {
     // Fetch the existing password details from the database based on the passwordId
-    const {password, name, id} = await getPasswordById(passwordId);
-    res.render('editPassword', { password, name, passwordId });
+    const {password} = await getPasswordById(passwordId);
+    res.render('editPassword', { password, passwordId });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching password details');
@@ -82,7 +82,6 @@ router.post('/:id', async(req, res) => {
   const updatedPassword = {
     password: req.body.password
   };
-  console.log("Updated Password", updatedPassword)
   try {
     // Call the function to update the password in the database
     await updatePasswordInDatabase(passwordId, updatedPassword);
@@ -96,13 +95,11 @@ router.post('/:id', async(req, res) => {
 
 router.post('/:id/delete', (req, res) => {
   const passwordId = req.params.id;
-  console.log("This is the password ID", passwordId)
 
 
   // Call the passwordController to delete the password from the database
   deletePassword(passwordId)
     .then((result) => {
-      console.log("This is the resilt", result)
       res.redirect('/signin');
     })
     .catch(err => {

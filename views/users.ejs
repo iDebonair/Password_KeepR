@@ -4,9 +4,9 @@
 <head>
   <title>Users</title>
 
-  <meta charset="UTF-8" >
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
   <link rel="stylesheet" href="/vendor/border-box.css" />
@@ -15,38 +15,47 @@
 
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script defer src="/scripts/users.js"></script>
- <!---->
+  <!---->
 </head>
 
 <body>
   <%- include('partials/_header.ejs')%>
-  <h1>Saved Passwords</h1>
-  <% user.forEach(element => { %>
-  <ul id="users"></ul>
-  <% for (key of Object.keys(element) ) {%>
-   <li><%= key %> : <%= element[key]%></li>
-  <% }%>
-  <div>=============================</div>
+    <h1 class="page-heading">Saved Passwords</h1>
+    <div class="links">
+      <!-- Link to the password generator page -->
+      <a href="/generatepassword" target="_blank" class="link1">
+        <h2>Generate Password</h2>
+      </a>
 
+      <!-- Link to the add password page -->
+      <a href="/passwords/new" class="link1">
+        <h2>Add New Password</h2>
+      </a>
+    </div>
+    <div class="password-container">
+      <% user.forEach(element=> { %>
+        <div class="password-box"> <!-- Wrap each password entry in its own container -->
+          <ul id="users"></ul>
+          <% for (key of Object.keys(element)) { %>
+            <li>
+              <%= key %> : <%= element[key] %>
+            </li>
+            <% } %>
 
-  <!-- Add the Edit and Delete buttons for each password -->
-  <div class="buttons-container">
-    <form action="/api/passwords/<%= element.password_id %>/edit" method="GET">
-      <button type="submit">Edit Password</button>
-    </form>
-    <form action="/api/passwords/<%= element.password_id %>/delete" method="POST">
-      <button type="submit">Delete Password</button>
-    </form>
-  </div>
-  <br><br>
-<% }) %>
+              <!-- Add the Edit and Delete buttons for each password -->
+              <div class="buttons-container">
+                <form action="/api/passwords/<%= element.password_id %>/edit" method="GET">
+                  <button class="edit-button" type="submit">Edit Password</button>
+                </form>
+                <form action="/api/passwords/<%= element.password_id %>/delete" method="POST">
+                  <button class="delete-button" type="submit">Delete Password</button>
+                </form>
+              </div>
+              <br><br>
+        </div>
+        <% }) %>
+    </div>
 
-
-  <!-- Link to the password generator page -->
-  <a href="/generatepassword" target="_blank">Generate Password</a>
-
-  <!-- Link to the add password page -->
-  <a href="/passwords/new">Add New Password</a>
 </body>
 
 </html>
